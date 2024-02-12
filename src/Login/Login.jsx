@@ -1,7 +1,8 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { db } from './config/firebase';
+import { db } from '../Admin/config/firebase';
 import { Box, Paper, Button, Stack,Typography } from '@mui/material';
+import { collection, getDocs } from 'firebase/firestore';
 
 
 const Login = () => {
@@ -13,14 +14,16 @@ const Login = () => {
   const Check =async  (event) => {
     event.preventDefault()
     try {
+      getDocs(collection(db, "admin"));
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
       const email = user.email;
       const accessToken = user.accessToken;
       const displayName= user.displayName;
+      console.log(accessToken,displayName);
       const emailDomain = email.split('@')[1];
       if (emailDomain === 'webskie.com') {
-        navigate('Home');
+        navigate('/Admin');
       } else {
         alert('Only users with @webskie.com domain are allowed.');
       }
