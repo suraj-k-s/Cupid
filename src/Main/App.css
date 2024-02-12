@@ -1,0 +1,36 @@
+
+*{
+  margin: 0px;
+  padding: 0px;
+}
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+@media only screen and (min-width: 768px) { /* Adjust the min-width as needed */
+  .App-header {
+    background-image: url('../../public/romantic-anniversary-celebration-with-couple.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+
+.App-link {
+  color: #61dafb;
+}
