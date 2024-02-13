@@ -19,8 +19,8 @@ const Login = () => {
       const user = userCredential.user;
       const email = user.email;
       const accessToken = user.accessToken;
+      console.log(accessToken);
       const displayName= user.displayName;
-      console.log(accessToken,displayName);
       const emailDomain = email.split('@')[1];
       if (emailDomain === 'webskie.com') {
         navigate('/Admin');
