@@ -14,6 +14,8 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import DashboardIcon from '@mui/icons-material/Dashboard'
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { Route, Routes, Link, useLocation } from 'react-router-dom'
 import { Stack } from '@mui/material'
 import Dashboard from './Components/Dashboard'
@@ -63,10 +65,47 @@ const ResponsiveDrawer = (props) => {
               <ListItemIcon>
                 <DashboardIcon className="icon-clr" />
               </ListItemIcon>
-              <ListItemText primary="DashBoard" />
+              <ListItemText primary="New" />
             </ListItemButton>
           </Link>
         </ListItem>
+
+        <ListItem disablePadding className="inner-box">
+          <Link
+          style={{textDecoration:'none'}}
+            to={'/Admin'}
+            className={`sidebar-btn ${
+              location.pathname === '/Admin' ? 'active-link' : ''
+            }`}
+            onClick={handleDrawerToggle}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <ThumbUpIcon className="icon-clr" color='green' />
+              </ListItemIcon>
+              <ListItemText primary="Approved" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+
+        <ListItem disablePadding className="inner-box">
+          <Link
+          style={{textDecoration:'none'}}
+            to={'/Admin'}
+            className={`sidebar-btn ${
+              location.pathname === '/Admin' ? 'active-link' : ''
+            }`}
+            onClick={handleDrawerToggle}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <ThumbDownIcon className="icon-clr" />
+              </ListItemIcon>
+              <ListItemText primary="Rejected" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+
       </List>
     </div>
   )
