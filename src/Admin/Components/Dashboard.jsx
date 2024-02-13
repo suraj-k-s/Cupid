@@ -4,9 +4,11 @@ import { Box, Typography, Button } from '@mui/material';
 import { db } from '../config/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import FullPageLoader from './FullPageLoader';
+
 const Dashboard = () => {
   const [userData, setUserData] = useState([]);
   const [checkLoad, setCheckBlur] = useState(false);
+  const [filter, setFilter] = useState('all');
   const loadDashboard = async () => {
     // Simulating a delay with setTimeout
     setTimeout(() => {
@@ -20,8 +22,8 @@ const Dashboard = () => {
       // Example data
       const exampleData = [
         { id: 1, question: 'How are you?', status: 'Pending' },
-        { id: 2, question: 'What is your name?', status: 'Pending' },
-        { id: 3, question: 'Where are you from?', status: 'Pending' },
+        { id: 2, question: 'What is your name?', status: 'Approved' },
+        { id: 3, question: 'Where are you from?', status: 'Rejected' },
       ];
       setUserData(exampleData);
     };
@@ -36,17 +38,29 @@ const Dashboard = () => {
     // Handle reject action here
     console.log('Rejected:', row);
   };
+  const handleViewAnswers = (row) => {
+    // Handle navigation to answers for the specific question
+    console.log('View Answers:', row);
+  };
+  const handleFilter = (status) => {
+    setFilter(status);
+  };
+  const getAnswerCounts = (status) => {
+    return userData.filter((row) => row.status === status).length;
+  };
   const columns = [
     { field: 'id', headerName: 'ID', flex: 1 },
     { field: 'question', headerName: 'Question', flex: 3 },
+    { field: 'status', headerName: 'Status', flex: 2 },
     {
       field: 'actions',
       headerName: 'Actions',
-      flex: 3,
+      flex: 4,
       renderCell: (params) => (
         <Box>
           <Button variant="contained" color="primary" onClick={() => handleAccept(params.row)}>Accept</Button>
           <Button variant="contained" color="secondary" onClick={() => handleReject(params.row)}>Reject</Button>
+          <Button variant="contained" onClick={() => handleViewAnswers(params.row)}>View Answers</Button>
         </Box>
       ),
     },
@@ -63,7 +77,10 @@ const Dashboard = () => {
             </Typography>
             <div style={{ height: 400, width: '100%' }}>
               <DataGrid
-                rows={userData}
+                rows={userData.filter((row) => {
+                  if (filter === 'all') return true;
+                  return row.status.toLowerCase() === filter;
+                })}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5, 10]}
