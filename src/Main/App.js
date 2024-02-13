@@ -25,6 +25,15 @@ function App() {
     setIsChecked(event.target.checked)
   }
 
+  const MAX_LINK_LENGTH = 30; // Maximum length of the link before truncating
+
+const TruncatedLink = ({ link }) => {
+  if (link.length > MAX_LINK_LENGTH) {
+    return `${link.substring(0, MAX_LINK_LENGTH)}...`;
+  }
+  return link;
+};
+
   const handlePostButtonClick = () => {
     if (question.trim() === '' || !isChecked) {
       alert('Please enter your question and agree to the terms and conditions.')
@@ -42,7 +51,7 @@ function App() {
         if (response.data.error) {
           alert('Something went wrong')
         } else {
-          setLink(url + response.data.questionId)
+          setLink(`${url}Question/${response.data.questionId}`)
         }
         setIsModalOpen(true)
       })
@@ -250,7 +259,7 @@ function App() {
                 copyToClipboard(link)
               }}
             >
-              {link}
+              <TruncatedLink link={link} />
             </Typography>
 
             <Box

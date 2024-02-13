@@ -12,10 +12,11 @@ import {
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import InstagramIcon from '@mui/icons-material/Instagram'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
 function Question() {
+  const navigate = useNavigate();
   const { id } = useParams()
   const [question, setQuestion] = useState('')
   const [answer, setAnswer] = useState('')
@@ -23,7 +24,6 @@ function Question() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
   const handleCheckboxChange = (event) => {
-    console.log(event)
     setIsChecked(event.target.checked)
   }
 
@@ -63,6 +63,9 @@ function Question() {
       .catch((error) => {
         console.error('Error making POST request:', error)
       })
+  }
+  const handleView = () => {
+    navigate('/Q&A/'+id);
   }
 
   useEffect(() => {
@@ -172,6 +175,16 @@ function Question() {
                 }}
               >
                 Submit
+              </Button>
+              OR
+              <Button
+                variant="contained"
+                sx={{ background: '#EB455F' }}
+                onClick={(e) => {
+                  handleView(e)
+                }}
+              >
+                View all answers
               </Button>
             </Box>
             <Box
