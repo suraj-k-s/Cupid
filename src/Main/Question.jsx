@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 import {
   Box,
@@ -12,38 +12,52 @@ import {
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import InstagramIcon from '@mui/icons-material/Instagram'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 
-function App() {
-  const [url, setUrl] = useState('https://cupid.webskie.com/')
-  const [isModalOpen, setIsModalOpen] = useState(false)
+function Question() {
+  const { id } = useParams()
   const [question, setQuestion] = useState('')
-  const [link, setLink] = useState('')
+  const [answer, setAnswer] = useState('')
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
   const handleCheckboxChange = (event) => {
+    console.log(event)
     setIsChecked(event.target.checked)
   }
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+  }
+  const getQuestionData = () => {
+    axios({
+      method: 'get',
+      url: `https://asia-south1-cupid-413817.cloudfunctions.net/cupid/api/cupid/question/${id}`,
+    })
+      .then((response) => {
+        setQuestion(response.data.data.question)
+      })
+      .catch((error) => {
+        console.error('Error making POST request:', error)
+      })
+  }
+
   const handlePostButtonClick = () => {
-    if (question.trim() === '' || !isChecked) {
+    console.log(isChecked)
+    if (answer.trim() === '' || !isChecked) {
       alert('Please enter your question and agree to the terms and conditions.')
       return
     }
 
     axios({
       method: 'post',
-      url: 'https://asia-south1-cupid-413817.cloudfunctions.net/cupid/api/cupid/create',
+      url: `https://asia-south1-cupid-413817.cloudfunctions.net/cupid/api/cupid/answer/${id}`,
       data: {
-        question: question,
+        answer: answer,
       },
     })
       .then((response) => {
-        if (response.data.error) {
-          alert('Something went wrong')
-        } else {
-          setLink(url + response.data.questionId)
-        }
         setIsModalOpen(true)
       })
       .catch((error) => {
@@ -51,18 +65,9 @@ function App() {
       })
   }
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-  }
-  const copyToClipboard = async (textToCopy) => {
-    try {
-      await navigator.clipboard.writeText(textToCopy)
-      alert('Text copied to clipboard')
-    } catch (error) {
-      console.error('Failed to copy text: ', error)
-      alert('Copy failed')
-    }
-  }
+  useEffect(() => {
+    getQuestionData()
+  }, [])
 
   return (
     <div className="App">
@@ -139,12 +144,12 @@ function App() {
               }}
             >
               <Typography variant="h6" align="left">
-                Create a question and get anonymous answers
+                {question}
               </Typography>
               <TextField
                 id="outlined-multiline-flexible"
-                label="your text here..."
-                onChange={(e) => setQuestion(e.target.value)}
+                label="enter your answer here...."
+                onChange={(e) => setAnswer(e.target.value)}
                 multiline
                 maxRows={4}
                 fullWidth
@@ -156,15 +161,17 @@ function App() {
                   onChange={handleCheckboxChange}
                 />
                 <Typography sx={{ fontSize: 13 }}>
-                  By clicking agree to <Link to={'/TC'}>T&C</Link>
+                  By clicking agree to <Link to={'/Question'}>T&C</Link>
                 </Typography>
               </Box>
               <Button
                 variant="contained"
                 sx={{ background: '#EB455F' }}
-                onClick={handlePostButtonClick}
+                onClick={(e) => {
+                  handlePostButtonClick(e)
+                }}
               >
-                Post
+                Submit
               </Button>
             </Box>
             <Box
@@ -241,16 +248,8 @@ function App() {
               {question}
             </Typography>
 
-            <Typography
-              variant="body1"
-              align="center"
-              sx={{ mt: 2, pt: 1 }}
-              id="linkToCopy"
-              onClick={() => {
-                copyToClipboard(link)
-              }}
-            >
-              {link}
+            <Typography variant="body1" align="center" sx={{ mt: 2, pt: 1 }}>
+              {answer}
             </Typography>
 
             <Box
@@ -259,8 +258,6 @@ function App() {
               <Button onClick={handleCloseModal} sx={{ mr: 2 }}>
                 Close
               </Button>
-
-              <Button onClick={() => copyToClipboard(link)}>Copy</Button>
             </Box>
           </Box>
         </Modal>
@@ -269,4 +266,4 @@ function App() {
   )
 }
 
-export default App
+export default Question

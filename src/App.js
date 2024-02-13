@@ -9,7 +9,7 @@ import Login from './Login/Login'
 const App = () => {
   return (
   <Routes>
-    <Route path='/' element={<Main/>} />
+    <Route path='/*' element={<Main/>} />
     <Route path='/Login/*' element={<Login/>} />
     <Route path='/Admin/*' element={<Admin/>} />
   </Routes>

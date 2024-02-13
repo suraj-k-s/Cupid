@@ -34,3 +34,8 @@
 .App-link {
   color: #61dafb;
 }
+
+
+::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for webkit-based browsers */
+}
