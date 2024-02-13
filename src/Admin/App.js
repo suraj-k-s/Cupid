@@ -19,6 +19,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { Route, Routes, Link, useLocation } from 'react-router-dom'
 import { Stack } from '@mui/material'
 import Dashboard from './Components/Dashboard'
+import Badge from '@mui/material/Badge';
 
 const drawerWidth = 250
 
@@ -30,7 +31,8 @@ const ResponsiveDrawer = (props) => {
     setMobileOpen(!mobileOpen)
   }
 
-  const location = useLocation() 
+  const location = useLocation()
+  const count = 22;
 
   const drawer = (
     <div>
@@ -43,7 +45,7 @@ const ResponsiveDrawer = (props) => {
           />
           <Typography
             variant="h5"
-            sx={{  fontWeight: '700' }}
+            sx={{ fontWeight: '700' }}
             style={{ color: '#420D17' }}
           >
             <span style={{ color: '#FA0D28' }}>Cu</span>pid
@@ -54,11 +56,10 @@ const ResponsiveDrawer = (props) => {
       <List className="sidebar-sty">
         <ListItem disablePadding className="inner-box">
           <Link
-          style={{textDecoration:'none'}}
+            style={{ textDecoration: 'none' }}
             to={'/Admin'}
-            className={`sidebar-btn ${
-              location.pathname === '/Admin' ? 'active-link' : ''
-            }`}
+            className={`sidebar-btn ${location.pathname === '/Admin' ? 'active-link' : ''
+              }`}
             onClick={handleDrawerToggle}
           >
             <ListItemButton>
@@ -68,15 +69,15 @@ const ResponsiveDrawer = (props) => {
               <ListItemText primary="New" />
             </ListItemButton>
           </Link>
+          <Badge badgeContent={count} color="primary"></Badge>
         </ListItem>
 
         <ListItem disablePadding className="inner-box">
           <Link
-          style={{textDecoration:'none'}}
+            style={{ textDecoration: 'none' }}
             to={'/Admin'}
-            className={`sidebar-btn ${
-              location.pathname === '/Admin' ? 'active-link' : ''
-            }`}
+            className={`sidebar-btn ${location.pathname === '/Admin' ? 'active-link' : ''
+              }`}
             onClick={handleDrawerToggle}
           >
             <ListItemButton>
@@ -86,15 +87,15 @@ const ResponsiveDrawer = (props) => {
               <ListItemText primary="Approved" />
             </ListItemButton>
           </Link>
+          <Badge badgeContent={count} color="primary"></Badge>
         </ListItem>
 
         <ListItem disablePadding className="inner-box">
           <Link
-          style={{textDecoration:'none'}}
+            style={{ textDecoration: 'none' }}
             to={'/Admin'}
-            className={`sidebar-btn ${
-              location.pathname === '/Admin' ? 'active-link' : ''
-            }`}
+            className={`sidebar-btn ${location.pathname === '/Admin' ? 'active-link' : ''
+              }`}
             onClick={handleDrawerToggle}
           >
             <ListItemButton>
@@ -104,6 +105,7 @@ const ResponsiveDrawer = (props) => {
               <ListItemText primary="Rejected" />
             </ListItemButton>
           </Link>
+          <Badge badgeContent={count} color="primary"></Badge>
         </ListItem>
 
       </List>
@@ -170,7 +172,7 @@ const ResponsiveDrawer = (props) => {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, 
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
